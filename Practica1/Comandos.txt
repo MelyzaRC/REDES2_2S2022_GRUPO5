@@ -1,0 +1,5 @@
+!Cambio de nombre de un dispositivo
+enable 
+configure terminal
+hostname NAME
+exit
