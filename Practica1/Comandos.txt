@@ -3,3 +3,193 @@ enable
 configure terminal
 hostname NAME
 exit
+
+
+!DESACTIVAR DTP EN INTERFACES TRUNK
+enable
+configure terminal 
+int f @/@
+switchport nonegotiate
+end
+
+
+!CREACION DE VLANS EN EL SERVIDOR DE VTP - S4
+enable
+configure terminal
+vlan 15
+name VENTAS
+exit
+vlan 25 
+name DISTRIBUCION
+exit
+vlan 35 
+name ADMINISTRACION
+exit
+vlan 45
+name SERVIDORES
+exit
+vlan 99 
+name MANAGEMENT&NATIVE
+exit
+vlan 999
+name BLACKHOLE
+exit
+exit
+!PARA VER LAS VLANS CREADAS
+show vlan
+
+
+!SERVIDOR VTP - S4
+enable
+configure terminal
+vtp domain g5
+vtp password g5 
+vtp mode server
+vtp version 2
+exit
+show vtp status
+
+configure terminal
+interface range FastEthernet 0/1-8
+switchport mode trunk 
+shutdown
+no shutdown
+end 
+
+
+!EN LOS CLIENTES S0 - S2 - S3 - S4 - S5
+enable
+configure terminal
+vtp domain g5
+vtp password g5 
+vtp mode server
+vtp version 2
+vtp mode client
+exit
+show vtp status
+
+
+!CONFIGURACION DE VLAN EN INTERFACE - RANGO
+enable
+configure terminal 
+interface range f #/# - #
+switchport mode access 
+switchport access vlan ID
+shutdown 
+no shutdown
+end
+
+!CONFIGURACION DE VLAN EN INTERFACE - UNICA
+enable
+configure terminal 
+interface f #/# 
+switchport mode access 
+switchport access vlan ID
+shutdown 
+no shutdown 
+end
+
+!ASIGNACION DE INTERFACES EN DESUSO A VLAN BLACKHOLE
+enable
+configure terminal 
+interface range f #/# - #
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+
+
+
+!CAMBIAR VLAN NATIVA EN LOS SWITCHES - NO ETIQUETA LAS TRAMAS QUE NO POSEEN VLAN 
+!APLICAR A TODOS LOS TRUNK
+enable 
+configure terminal 
+interface range # / # - #
+switchport mode trunk
+switchport trunk native vlan 99
+shutdow 
+no shutdown
+end
+show interfaces trunk 
+
+
+
+
+!show running para ver los puertos que estan sin uso 
+
+
+!*--------------------------------------------------
+!INTERFACES TIENEN QUE ESTAR EN MODO ACCESO PARA CONFIGURAR PORT SECURITY
+!INTERFACES DE VENTAS
+enable
+configure terminal
+interface f 0/4
+!Port-security viene desactivado por defecto asi que se debe activar 
+switchport port-security
+switchport port-security mac-address sticky
+switchport port-security maximum 5
+end
+
+
+!INTERFACES DE DISTRIBUCION PARA TODOS LOS QUE SE CONECTEN A HOSTS
+enable
+configure terminal
+interface f 0/7
+switchport port-security
+!Sticky es para que aprenda la MAC que esta configurada al puerto y la toma como la unica permitida 
+switchport port-security mac-address sticky
+switchport port-security maximum 1
+switchport port-security violation shutdown
+end
+
+!INTERFACES DE ADMINISTRACION
+enable
+configure terminal
+interface f 0/6
+switchport port-security
+switchport port-security mac-address
+switchport port-security maximum 1
+switchport port-security violation shutdown
+end
+
+
+
+!PARA VER LA CONFIGURACION DE PORT SECURITY
+show port-security interface f #/#
+
+!----------------------------------------------------------------------------------------
+!PARA LACP mode [active | passive]
+!PARA PAgP mode [auto | desirable]
+!TAMBIEN TIENEN QUE ESTAR LOS ENLACES A LAS MISMAS VELOCIDADES
+
+
+!PAgP
+enable
+configure terminal 
+interface range f 0/4-5
+channel-group 2 mode desirable 
+shutdown
+no shutdown
+end 
+
+enable
+configure terminal 
+interface range f 0/7-8
+channel-group 5 mode desirable 
+shutdown
+no shutdown
+end 
+show etherchannel summary
+
+
+
+!LACP
+enable
+configure terminal 
+interface range f #/#-#
+channel-group 1 mode active | passive 
+end 
+!esto en ambos switches con el mismo numero 
+
+
+
