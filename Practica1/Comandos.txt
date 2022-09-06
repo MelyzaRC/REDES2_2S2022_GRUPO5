@@ -191,5 +191,72 @@ channel-group 1 mode active | passive
 end 
 !esto en ambos switches con el mismo numero 
 
+/*COMANDOS PARA LACP*/
+
+!S0
+enable
+configure terminal 
+interface range f 0/2-3
+channel-group 1 mode active
+end 
+
+enable
+configure terminal 
+interface range f 0/4-5
+channel-group 3 mode active
+end 
+
+!S1
+enable
+configure terminal 
+interface range f 0/2-3
+channel-group 1 mode active
+end 
+
+enable
+configure terminal 
+interface range f 0/4-5
+channel-group 2 mode active
+end 
+
+enable
+configure terminal 
+interface range f 0/7-8
+channel-group 5 mode active
+end 
+
+
+!S2
+enable
+configure terminal 
+interface range f 0/4-5
+channel-group 2 mode active
+end 
+
+enable
+configure terminal 
+interface range f 0/1-2
+channel-group 4 mode active
+end 
+
+!S4
+enable
+configure terminal 
+interface range f 0/1-2
+channel-group 4 mode active
+end 
+
+enable
+configure terminal 
+interface range f 0/4-5
+channel-group 3 mode active
+end 
+
+enable
+configure terminal 
+interface range f 0/7-8
+channel-group 5 mode active
+end
+
 
 
