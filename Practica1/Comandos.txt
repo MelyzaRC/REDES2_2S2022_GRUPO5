@@ -1,19 +1,11 @@
-!Cambio de nombre de un dispositivo
+!CAMBIO DE NOMBRE A UN EQUIPO******************************
 enable 
 configure terminal
 hostname NAME
 exit
 
 
-!DESACTIVAR DTP EN INTERFACES TRUNK
-enable
-configure terminal 
-int f @/@
-switchport nonegotiate
-end
-
-
-!CREACION DE VLANS EN EL SERVIDOR DE VTP - S4
+!CREACION DE VLANS******************************************
 enable
 configure terminal
 vlan 15
@@ -33,156 +25,35 @@ name MANAGEMENT&NATIVE
 exit
 vlan 999
 name BLACKHOLE
-exit
-exit
+end
 !PARA VER LAS VLANS CREADAS
 show vlan
 
 
-!SERVIDOR VTP - S4
-enable
-configure terminal
-vtp domain g5
-vtp password g5 
-vtp mode server
-vtp version 2
-exit
-show vtp status
-
-configure terminal
-interface range FastEthernet 0/1-8
-switchport mode trunk 
-shutdown
-no shutdown
-end 
-
-
-!EN LOS CLIENTES S0 - S2 - S3 - S4 - S5
-enable
-configure terminal
-vtp domain g5
-vtp password g5 
-vtp mode server
-vtp version 2
-vtp mode client
-exit
-show vtp status
+!ASIGNACION DE IP A EQUIPOS*******************************
+!VENTAS-PC1
+ipconfig 192.168.85.2 255.255.255.248 192.168.85.1
+!VENTAS-PC2
+ipconfig 192.168.85.3 255.255.255.248 192.168.85.1
+!VENTAS-PC3
+ipconfig 192.168.85.4 255.255.255.248 192.168.85.1
+!DISTRIBUCION-PC1
+ipconfig 192.168.85.10 255.255.255.248 192.168.85.9
+!DISTRIBUCION-PC2
+ipconfig 192.168.85.11 255.255.255.248 192.168.85.9
+!DISTRIBUCION-PC3
+ipconfig 192.168.85.12 255.255.255.248 192.168.85.9
+!ADMINISTRACION-PC1
+ipconfig 192.168.85.18 255.255.255.248 192.168.85.17
+!ADMINISTRACION-PC2
+ipconfig 192.168.85.19 255.255.255.248 192.168.85.17
+!SERVIDORES-SERVER1
+ipconfig 192.168.85.26 255.255.255.248 192.168.85.25
+!SERVIDORES-SERVER2
+ipconfig 192.168.85.27 255.255.255.248 192.168.85.25
 
 
-!CONFIGURACION DE VLAN EN INTERFACE - RANGO
-enable
-configure terminal 
-interface range f #/# - #
-switchport mode access 
-switchport access vlan ID
-shutdown 
-no shutdown
-end
-
-!CONFIGURACION DE VLAN EN INTERFACE - UNICA
-enable
-configure terminal 
-interface f #/# 
-switchport mode access 
-switchport access vlan ID
-shutdown 
-no shutdown 
-end
-
-!ASIGNACION DE INTERFACES EN DESUSO A VLAN BLACKHOLE
-enable
-configure terminal 
-interface range f #/# - #
-switchport mode access 
-switchport access vlan 999
-shutdown 
-end
-
-
-
-!CAMBIAR VLAN NATIVA EN LOS SWITCHES - NO ETIQUETA LAS TRAMAS QUE NO POSEEN VLAN 
-!APLICAR A TODOS LOS TRUNK
-enable 
-configure terminal 
-interface range # / # - #
-switchport mode trunk
-switchport trunk native vlan 99
-shutdow 
-no shutdown
-end
-show interfaces trunk 
-
-
-
-
-!show running para ver los puertos que estan sin uso 
-
-
-!*--------------------------------------------------
-!INTERFACES TIENEN QUE ESTAR EN MODO ACCESO PARA CONFIGURAR PORT SECURITY
-!INTERFACES DE VENTAS
-enable
-configure terminal
-interface f 0/4
-!Port-security viene desactivado por defecto asi que se debe activar 
-switchport port-security
-switchport port-security mac-address sticky
-switchport port-security maximum 5
-end
-
-
-!INTERFACES DE DISTRIBUCION PARA TODOS LOS QUE SE CONECTEN A HOSTS
-enable
-configure terminal
-interface f 0/7
-switchport port-security
-!Sticky es para que aprenda la MAC que esta configurada al puerto y la toma como la unica permitida 
-switchport port-security mac-address sticky
-switchport port-security maximum 1
-switchport port-security violation shutdown
-end
-
-!INTERFACES DE ADMINISTRACION
-enable
-configure terminal
-interface f 0/6
-switchport port-security
-switchport port-security mac-address
-switchport port-security maximum 1
-switchport port-security violation shutdown
-end
-
-
-
-!PARA VER LA CONFIGURACION DE PORT SECURITY
-show port-security interface f #/#
-
-!----------------------------------------------------------------------------------------
-!PARA LACP mode [active | passive]
-!PARA PAgP mode [auto | desirable]
-!TAMBIEN TIENEN QUE ESTAR LOS ENLACES A LAS MISMAS VELOCIDADES
-
-
-!PAgP
-enable
-configure terminal 
-interface range f 0/4-5
-channel-group 2 mode desirable 
-shutdown
-no shutdown
-end 
-
-enable
-configure terminal 
-interface range f 0/7-8
-channel-group 5 mode desirable 
-shutdown
-no shutdown
-end 
-show etherchannel summary
-
-
-
+!CONFIGURACION DE ETHERNET CHANNEL LACP******************
 !LACP
 enable
 configure terminal 
@@ -257,6 +128,547 @@ configure terminal
 interface range f 0/7-8
 channel-group 5 mode active
 end
+
+!VER EL ESTADO DEL ETHERNET CHANNEL
+show etherchannel summary
+
+
+!CONFIGURACION DE ETHERNET CHANNEL PAgP******************
+!PAgP
+enable
+configure terminal 
+interface range f #/#-#
+channel-group 1 mode desirable | passive 
+end 
+!esto en ambos switches con el mismo numero 
+
+/*COMANDOS PARA PAgP*/
+
+!S0
+enable
+configure terminal 
+interface range f 0/2-3
+channel-group 1 mode desirable
+end 
+
+enable
+configure terminal 
+interface range f 0/4-5
+channel-group 3 mode desirable
+end 
+
+!S1
+enable
+configure terminal 
+interface range f 0/2-3
+channel-group 1 mode desirable
+end 
+
+enable
+configure terminal 
+interface range f 0/4-5
+channel-group 2 mode desirable
+end 
+
+enable
+configure terminal 
+interface range f 0/7-8
+channel-group 5 mode desirable
+end 
+
+
+!S2
+enable
+configure terminal 
+interface range f 0/4-5
+channel-group 2 mode desirable
+end 
+
+enable
+configure terminal 
+interface range f 0/1-2
+channel-group 4 mode desirable
+end 
+
+!S4
+enable
+configure terminal 
+interface range f 0/1-2
+channel-group 4 mode desirable
+end 
+
+enable
+configure terminal 
+interface range f 0/4-5
+channel-group 3 mode desirable
+end 
+
+enable
+configure terminal 
+interface range f 0/7-8
+channel-group 5 mode desirable
+end
+
+!VER EL ESTADO DEL ETHERNET CHANNEL
+show etherchannel summary
+
+
+
+!CONFIGURACION DE PROTOCOLO STP EN SUS DIFERENTES MODOS
+!CONFIGURACION DE PVST
+!S0
+enable
+configure terminal 
+spanninng-tree mode pvst
+exit
+
+!S1
+enable
+configure terminal 
+spanninng-tree mode pvst
+exit
+
+!S2
+enable
+configure terminal 
+spanninng-tree mode pvst
+exit
+
+!S2
+enable
+configure terminal 
+spanninng-tree mode pvst
+exit
+
+!S4
+enable
+configure terminal 
+spanninng-tree mode pvst
+exit
+
+!S5
+enable
+configure terminal 
+spanninng-tree mode pvst
+exit
+
+!CONFIGURACION DE RAPID-PVST 
+!S0
+enable
+configure terminal 
+spanninng-tree mode rapid-pvst
+exit
+
+!S1
+enable
+configure terminal 
+spanninng-tree mode rapid-pvst
+exit
+
+!S2
+enable
+configure terminal 
+spanninng-tree mode rapid-pvst
+exit
+
+!S3
+enable
+configure terminal 
+spanninng-tree mode rapid-pvst
+exit
+
+!S4
+enable
+configure terminal 
+spanninng-tree mode rapid-pvst
+exit
+
+
+!CONFIGURACION VTP*********************************
+!SERVIDOR VTP - S4
+enable
+configure terminal
+vtp domain g5
+vtp password g5 
+vtp mode server
+vtp version 2
+end
+show vtp status
+
+configure terminal
+interface range FastEthernet 0/1-8
+switchport mode trunk 
+shutdown
+no shutdown
+end 
+
+
+!EN LOS CLIENTES S0 - S2 - S3 - S4 - S5
+enable
+configure terminal
+vtp domain g5
+vtp password g5 
+vtp mode server
+vtp version 2
+vtp mode client
+exit
+show vtp status
+
+
+!CONFIGURACION DE PORT SECURITY****************************
+
+!INTERFACES DE VENTAS**************************************
+
+!SO
+enable
+configure terminal
+interface f 0/7
+!Port-security viene desactivado por defecto asi que se debe activar 
+switchport port-security
+switchport port-security mac-address sticky
+switchport port-security maximum 5
+end
+!S3
+enable
+configure terminal
+interface f 0/5
+!Port-security viene desactivado por defecto asi que se debe activar 
+switchport port-security
+switchport port-security mac-address sticky
+switchport port-security maximum 5
+end
+!S5
+enable
+configure terminal
+interface f 0/4
+!Port-security viene desactivado por defecto asi que se debe activar 
+switchport port-security
+switchport port-security mac-address sticky
+switchport port-security maximum 5
+end
+
+!INTERFACES DE DISTRIBUCION***********************************
+!S0
+enable
+configure terminal
+interface f 0/8
+switchport port-security
+!Sticky es para que aprenda la MAC que esta configurada al puerto y la toma como la unica permitida 
+switchport port-security mac-address sticky
+switchport port-security maximum 1
+switchport port-security violation shutdown
+end
+!S2
+enable
+configure terminal
+interface f 0/7
+switchport port-security
+!Sticky es para que aprenda la MAC que esta configurada al puerto y la toma como la unica permitida 
+switchport port-security mac-address sticky
+switchport port-security maximum 1
+switchport port-security violation shutdown
+end
+!S4
+enable
+configure terminal
+interface f 0/9
+switchport port-security
+!Sticky es para que aprenda la MAC que esta configurada al puerto y la toma como la unica permitida 
+switchport port-security mac-address sticky
+switchport port-security maximum 1
+switchport port-security violation shutdown
+end
+
+!INTERFACES DE ADMINISTRACION***********************************
+!S2
+enable
+configure terminal
+interface f 0/6
+switchport port-security
+switchport port-security mac-address
+switchport port-security maximum 1
+switchport port-security violation shutdown
+end
+
+!S4
+enable
+configure terminal
+interface f 0/10
+switchport port-security
+switchport port-security mac-address
+switchport port-security maximum 1
+switchport port-security violation shutdown
+end
+
+
+!CONFIGURACION DE VLAN NATIVA A ENLACES TRUNK*********************
+!S0***************************************************************	
+!F 0/1-6		
+enable 
+configure terminal 
+interface range f 0/1-6
+switchport mode trunk
+switchport trunk native vlan 99
+shutdow 
+no shutdown
+end
+show interfaces trunk
+
+!S1***************************************************************
+!F 0/1-8
+enable 
+configure terminal 
+interface range f 0/1-8
+switchport mode trunk
+switchport trunk native vlan 99
+shutdow 
+no shutdown
+end
+show interfaces trunk
+
+!S2***************************************************************	
+!F 0/1-5
+enable 
+configure terminal 
+interface range f 0/1-5
+switchport mode trunk
+switchport trunk native vlan 99
+shutdow 
+no shutdown
+end
+show interfaces trunk
+
+!F 0/8
+enable 
+configure terminal 
+interface f 0/8
+switchport mode trunk
+switchport trunk native vlan 99
+shutdow 
+no shutdown
+end
+show interfaces trunk
+
+!S3***************************************************************
+F 0/1
+enable 
+configure terminal 
+interface f 0/1
+switchport mode trunk
+switchport trunk native vlan 99
+shutdow 
+no shutdown
+end
+show interfaces trunk
+!F 0/3
+enable 
+configure terminal 
+interface f 0/3
+switchport mode trunk
+switchport trunk native vlan 99
+shutdow 
+no shutdown
+end
+show interfaces trunk
+!F 0/6
+enable 
+configure terminal 
+interface f 0/6
+switchport mode trunk
+switchport trunk native vlan 99
+shutdow 
+no shutdown
+end
+show interfaces trunk
+
+!S4***************************************************************
+!F 0/1-8	
+enable 
+configure terminal 
+interface range f 0/1-8
+switchport mode trunk
+switchport trunk native vlan 99
+shutdow 
+no shutdown
+end
+show interfaces trunk
+
+!S5***************************************************************	
+!F 0/1
+enable 
+configure terminal 
+interface f 0/1
+switchport mode trunk
+switchport trunk native vlan 99
+shutdow 
+no shutdown
+end
+show interfaces trunk
+!F 0/3
+enable 
+configure terminal 
+interface f 0/3
+switchport mode trunk
+switchport trunk native vlan 99
+shutdow 
+no shutdown
+end
+show interfaces trunk
+!F 0/6		
+enable 
+configure terminal 
+interface f 0/6
+switchport mode trunk
+switchport trunk native vlan 99
+shutdow 
+no shutdown
+end
+show interfaces trunk
+
+!ASIGNACION DE INTERFACES EN DESUSO A VLAN BLACKHOLE**************
+!S0***************************************************************
+!F0/9-24
+enable
+configure terminal 
+interface range f 0/9-24
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+!G0/1-2
+enable
+configure terminal 
+interface range g 0/1-2
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+!S1***************************************************************
+!F0/9-24
+enable
+configure terminal 
+interface range f 0/9-24
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+!G0/1-2
+enable
+configure terminal 
+interface range g 0/1-2
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+!S2***************************************************************
+!F0/9-24
+enable
+configure terminal 
+interface range f 0/9-24
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+!G0/1-2
+enable
+configure terminal 
+interface range g 0/1-2
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+!S3***************************************************************
+!F0/7-24
+enable
+configure terminal 
+interface range f 0/9-24
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+!G0/1-2
+enable
+configure terminal 
+interface range g 0/1-2
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+!S4***************************************************************
+!F0/11-24
+enable
+configure terminal 
+interface range f 0/9-24
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+!G0/1-2
+enable
+configure terminal 
+interface range g 0/1-2
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+!S5***************************************************************
+!F0/2
+enable
+configure terminal 
+interface f 0/2
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+!F0/7-24
+enable
+configure terminal 
+interface range f 0/9-24
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+!G0/1-2
+enable
+configure terminal 
+interface range g 0/1-2
+switchport mode access 
+switchport access vlan 999
+shutdown 
+end
+
+!DESACTIVAR DTP EN INTERFACES TRUNK
+enable
+configure terminal 
+int f @/@
+switchport nonegotiate
+end
+
+!CONFIGURACION DE VLAN EN INTERFACE - RANGO
+enable
+configure terminal 
+interface range f #/# - #
+switchport mode access 
+switchport access vlan ID
+shutdown 
+no shutdown
+end
+
+!CONFIGURACION DE VLAN EN INTERFACE - UNICA
+enable
+configure terminal 
+interface f #/# 
+switchport mode access 
+switchport access vlan ID
+shutdown 
+no shutdown 
+end
+
+
+
+
+
+
 
 
 
