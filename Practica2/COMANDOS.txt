@@ -1,0 +1,190 @@
+!*****************************************************************
+!	Cambio de nombre de los dispositivos
+!*****************************************************************
+
+!VODAFONE
+!R0-VODAFONE
+enable
+configure terminal
+hostname R0-VODAFONE
+end
+!R1-VODAFONE
+enable
+configure terminal
+hostname R1-VODAFONE
+end
+!R2-VODAFONE
+enable
+configure terminal
+hostname R2-VODAFONE
+end
+!R3-VODAFONE
+enable
+configure terminal
+hostname R3-VODAFONE
+end
+!R4-VODAFONE
+enable
+configure terminal
+hostname R4-VODAFONE
+end
+!SW0-VODAFONE
+enable
+configure terminal
+hostname SW0V
+end
+!SW1-VODAFONE
+enable
+configure terminal
+hostname SW1V
+end
+!SW2-VODAFONE
+enable
+configure terminal
+hostname SW2V
+end
+
+
+
+!*****************************************************************
+!	Asignacion de IP a las interfaces de cada router
+!*****************************************************************
+
+!R0-VODAFONE 
+enable 
+configure terminal 
+interface serial 2/0
+ip address 192.168.26.4 255.255.255.252
+shutdown 
+no shutdown 
+exit
+interface serial 3/0
+ip address 192.168.26.9 255.255.255.252
+shutdown 
+no shutdown 
+exit
+interface serial 7/0
+ip address 192.168.26.13 255.255.255.252
+shutdown 
+no shutdown 
+exit
+interface serial 6/0
+ip address 192.168.26.2 255.255.255.252
+shutdown 
+no shutdown 
+exit
+end
+show ip interface brief
+
+!R1-VODAFONE 
+enable 
+configure terminal 
+interface serial 2/0
+ip address 192.168.26.6 255.255.255.252
+shutdown 
+no shutdown 
+exit
+end 
+show ip interface brief
+
+!R2-VODAFONE 
+enable 
+configure terminal 
+interface serial 2/0
+ip address 192.168.26.1 255.255.255.252
+shutdown 
+no shutdown 
+exit
+end 
+show ip interface brief
+
+enable 
+configure terminal 
+interface f 0/0.10
+encapsulatio dot1q 10
+ip address 192.168.25.1 255.255.255.128
+shutdown
+no shutdown
+exit
+interface f 0/0.20
+encapsulatio dot1q 20
+ip address 192.168.25.129 255.255.255.128
+shutdown
+no shutdown
+exit
+end 
+show ip interface brief
+
+!R3-VODAFONE 
+enable 
+configure terminal 
+interface serial 2/0
+ip address 192.168.26.14 255.255.255.252
+shutdown 
+no shutdown 
+exit
+end 
+show ip interface brief
+
+
+
+
+
+!*****************************************************************
+!	CREACION DE VLANS
+!*****************************************************************
+
+!VLANS SW0-VODAFONE
+enable 
+configure terminal
+vlan 10
+name EDUCACION 
+exit
+vlan 20 
+name CULTURAYDEPORTES
+end
+show vlan 
+
+!VLANS SW1-VODAFONE
+enable 
+configure terminal
+vlan 10
+name EDUCACION 
+exit
+vlan 20 
+name CULTURAYDEPORTES
+end
+show vlan 
+
+!VLANS SW2-VODAFONE
+enable 
+configure terminal
+vlan 10
+name EDUCACION 
+exit
+vlan 20 
+name CULTURAYDEPORTES
+end
+show vlan 
+
+
+
+!*****************************************************************
+!	RIP
+!*****************************************************************
+
+enable 
+configure terminal
+router rip	
+version 2
+network 192.168.25.0
+network 192.168.25.128
+network 192.168.26.0
+network 192.168.26.4
+network 192.168.26.8
+network 192.168.26.12
+network 192.168.26.16
+network 192.168.26.20
+no auto-summary
+end 
+copy running-config startup-config 
