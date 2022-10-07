@@ -54,7 +54,7 @@ end
 enable 
 configure terminal 
 interface serial 2/0
-ip address 192.168.26.4 255.255.255.252
+ip address 192.168.26.5 255.255.255.252
 shutdown 
 no shutdown 
 exit
@@ -100,15 +100,8 @@ show ip interface brief
 
 enable 
 configure terminal 
-interface f 0/0.10
-encapsulatio dot1q 10
+interface f 0/0
 ip address 192.168.25.1 255.255.255.128
-shutdown
-no shutdown
-exit
-interface f 0/0.20
-encapsulatio dot1q 20
-ip address 192.168.25.129 255.255.255.128
 shutdown
 no shutdown
 exit
@@ -126,65 +119,93 @@ exit
 end 
 show ip interface brief
 
-
-
-
-
-!*****************************************************************
-!	CREACION DE VLANS
-!*****************************************************************
-
-!VLANS SW0-VODAFONE
+!R4-VODAFONE 
 enable 
-configure terminal
-vlan 10
-name EDUCACION 
+configure terminal 
+interface serial 2/0
+ip address 192.168.26.10 255.255.255.252
+shutdown 
+no shutdown 
 exit
-vlan 20 
-name CULTURAYDEPORTES
-end
-show vlan 
-
-!VLANS SW1-VODAFONE
-enable 
-configure terminal
-vlan 10
-name EDUCACION 
-exit
-vlan 20 
-name CULTURAYDEPORTES
-end
-show vlan 
-
-!VLANS SW2-VODAFONE
-enable 
-configure terminal
-vlan 10
-name EDUCACION 
-exit
-vlan 20 
-name CULTURAYDEPORTES
-end
-show vlan 
-
-
-
-!*****************************************************************
-!	RIP
-!*****************************************************************
-
-enable 
-configure terminal
-router rip	
-version 2
-network 192.168.25.0
-network 192.168.25.128
-network 192.168.26.0
-network 192.168.26.4
-network 192.168.26.8
-network 192.168.26.12
-network 192.168.26.16
-network 192.168.26.20
-no auto-summary
 end 
-copy running-config startup-config 
+show ip interface brief
+
+enable 
+configure terminal 
+interface f 0/0
+ip address 192.168.25.129 255.255.255.128
+shutdown
+no shutdown
+exit
+end 
+show ip interface brief
+
+
+!*****************************************************************
+!	RED VODAFONE - ENRUTAMIENTO DINAMICO - REDISTRIBUCION
+!*****************************************************************
+
+!	R1-VODAFONE - RIP
+•	enable 
+•	configure terminal
+•	router rip
+•	version 2
+•	network 192.168.26.16
+•	network 192.168.26.4
+•	end
+•	show ip interface brief 
+
+!	R2-VODAFONE - RIP
+•	enable 
+•	configure terminal
+•	router rip
+•	version 2
+•	network 192.168.25.0
+•	network 192.168.26.0
+•	end
+•	show ip interface brief 
+
+!	R4-VODAFONE - OSPF
+•	enable 
+•	configure terminal
+•	router ospf 10
+•	network 192.168.25.0 0.0.0.127 area 10
+•	network 192.168.26.0 0.0.0.3 area 10
+•	end
+•	show ip interface brief
+
+!	R0-VODAFONE - RIP
+•	enable 
+•	configure terminal
+•	router rip
+•	version 2
+•	network 192.168.26.0
+•	network 192.168.26.4
+•	network 192.168.26.8
+•	end
+•	show ip interface brief 
+
+!	R0-VODAFONE - OSPF
+•	enable 
+•	configure terminal
+•	router ospf 10
+•	network 192.168.26.0 0.0.0.3 area 10
+•	network 192.168.26.4 0.0.0.3 area 10
+•	network 192.168.26.8 0.0.0.3 area 10
+•	end
+•	show ip interface brief
+
+!	R0-VODAFONE - REDISTRIBUCION RIP
+•	enable 
+•	configure terminal
+•	router rip
+•	version 2
+•	redistribute ospf 10 metric 1
+•	end
+
+!	R0-VODAFONE - REDISTRIBUCION OSPF
+•	enable 
+•	configure terminal
+•	router ospf 10
+•	redistribute rip subnets
+•	end  
