@@ -47,7 +47,7 @@ end
 
 
 !*****************************************************************
-!	Asignacion de IP a las interfaces de cada router
+!	Asignacion de IP a las interfaces de cada router VODAFONE
 !*****************************************************************
 
 !R0-VODAFONE 
@@ -208,4 +208,180 @@ show ip interface brief
 •	configure terminal
 •	router ospf 10
 •	redistribute rip subnets
+•	end  
+
+!*****************************************************************
+!	Asignacion de IP a las interfaces de cada router KNOLOGY
+!*****************************************************************
+
+!R0-KNOLOGY
+
+enable
+configure terminal 
+interface serial 2/0
+ip address 192.168.56.129 255.255.255.252
+shutdown
+no shutdown
+end			
+
+enable
+configure terminal 
+interface serial 3/0
+ip address 192.168.56.133 255.255.255.252
+shutdown
+no shutdown
+end			
+
+!R1-KNOLOGY
+enable
+configure terminal 
+interface serial 3/0
+ip address 192.168.56.137 255.255.255.252
+shutdown
+no shutdown
+end			
+
+enable
+configure terminal 
+interface serial 6/0
+ip address 192.168.56.141 255.255.255.252
+shutdown
+no shutdown
+end			
+
+enable
+configure terminal 
+interface serial 2/0
+ip address 192.168.56.130 255.255.255.252
+shutdown
+no shutdown
+end			
+
+
+!R2-KNOLOGY
+enable
+configure terminal 
+interface serial 2/0
+ip address 192.168.56.134 255.255.255.252
+shutdown
+no shutdown
+end
+
+enable
+configure terminal 
+interface fastEthernet 0/0
+ip address 192.168.56.1 255.255.255.128
+shutdown
+no shutdown
+end
+	
+	
+!R3-KNOLOGY
+enable
+configure terminal 
+interface serial 2/0
+ip address 192.168.56.138 255.255.255.252
+shutdown
+no shutdown
+end
+			
+enable
+configure terminal 
+interface fastEthernet 0/0
+ip address 192.168.55.1 255.255.255.128
+shutdown
+no shutdown
+end			
+
+!R4-KNOLOGY
+Serial 2/0
+192.168.56.142
+enable
+configure terminal 
+interface serial 2/0
+ip address 192.168.56.142 255.255.255.252
+shutdown
+no shutdown
+end			
+
+enable
+configure terminal 
+interface fastEthernet 0/0
+ip address 192.168.55.129 255.255.255.252
+shutdown
+no shutdown
+end			 
+
+!*****************************************************************
+!	RED KNOLOGY - ENRUTAMIENTO DINAMICO - REDISTRIBUCION
+!*****************************************************************
+
+!	R1-KNOLOGY - OSPF 10
+•	enable 
+•	configure terminal
+•	router ospf 10
+•	network 192.168.56.136 0.0.0.3 area 10
+•	network 192.168.56.128 0.0.0.3 area 10
+•	show ip interface brief  
+•	end
+
+!	R3-KNOLOGY - OSPF
+•	enable 
+•	configure terminal
+•	router ospf 10
+•	network 192.168.56.136 0.0.0.3 area 10
+•	network 192.168.55.0 0.0.0.127 area 10
+•	end
+•	show ip interface brief 
+
+!	R4-KNOLOGY - OSPF
+•	enable 
+•	configure terminal
+•	router ospf 10
+•	network 192.168.55.128 0.0.0.127 area 10
+•	network 192.168.56.140 0.0.0.3 area 10
+•	end
+•	show ip interface brief
+
+!	R2-KNOLOGY - EIGRP
+•	enable 
+•	configure terminal
+•	router eigrp 10
+•	network 192.168.55.132 0.0.0.127
+•	network 192.168.56.0 0.0.0.3
+•	end
+•	show ip interface brief
+
+!	R0-KNOLOGY - OSPF
+•	enable 
+•	configure terminal
+•	router ospf 10
+•	network 192.168.56.128 0.0.0.3 area 10
+•	network 192.168.26.20 0.0.0.3 area 10
+•	network 192.168.56.132 0.0.0.3 area 10
+•	end
+•	show ip interface brief 
+
+!	R0-KNOLOGY - EIGRP
+•	enable 
+•	configure terminal
+•	router ospf 10
+•	network 192.168.56.0 0.0.0.3 area 10
+•	network 192.168.56.4 0.0.0.3 area 10
+•	network 192.168.56.8 0.0.0.3 area 10
+•	end
+•	show ip interface brief
+
+!	R0-KNOLOGY - REDISTRIBUCION EIGRP
+•	enable 
+•	configure terminal
+•	router eigrp 10
+•	redistribute ospf metric 10000 100 255 1 1500
+•	end
+
+!	R0-KNOLOGY - REDISTRIBUCION OSPF
+•	enable 
+•	configure terminal
+•	router ospf 10
+•	redistribute eigrp subnets
 •	end  
