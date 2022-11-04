@@ -25,6 +25,7 @@ Integrantes:
 
 ## Contenido
 - Implementacion de ACLs para controlar el tráfico en las subredes 
+- Implementacion de Security Group
 
 ## Implementacion de ACLs para controlar el tráfico en las subredes 
 > ¿Qué es una ACL?
