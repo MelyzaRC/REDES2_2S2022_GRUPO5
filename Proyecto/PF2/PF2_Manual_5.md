@@ -88,3 +88,29 @@ Ahora, podemos editar las reglas, tanto de entrada como de salida, a nuestra con
 3. Guardar los cambios y verificar la creación de la regla de salida. 
 
 ![PASO11](images/12.PNG "Guardar y revisar")
+
+## Implementacion de Security Group
+> Un ***Security Group** o grupo de seguridad controla el trafico que puede llegar y salir de los recursos con los que esta asociado. Cuando se crea una ***VPC*** esta biene con un grupo de seguridad asociado.
+> Para cada grupo de seguridad, se pueden agregar reglas que controlan el trafico en funcion de los protocolos y los numeros de puertos. Hay conjuntos separados de reglas para el trafico entrante y saliente.
+> [Security Group](images/sg1.png "Security group")
+
+## Pasos para configurar un Security Group
+1. Ingrese al panel de navegacion y elija **security groups**
+
+![PASO1](images/sg2.png "Consola security group")
+
+2. Elija **Crear grupo de seguridad**
+
+![PASO2](images/sg3.png "crear grupo de seguridad")
+
+3. Ingrese un nombre y una descripción para el grupo de seguridad. No puede cambiar el nombre ni la descripción de un grupo de seguridad después de crearlo
+
+![PASO3](images/sg4.png "descripciones")
+
+4. Elija la **VPC** a la cual se le asignara el grupo de seguridad
+5. Puede agregar reglas de grupo de seguridad ahora o más adelante.
+
+![PASO5](images/sg5.png "reglas")
+
+7. Elija Create Security Group (Crear grupo de seguridad).
+![PASO4](images/sg6.png "crear grupo de seguridad")
