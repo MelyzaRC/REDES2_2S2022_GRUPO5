@@ -92,7 +92,20 @@ Ahora, podemos editar las reglas, tanto de entrada como de salida, a nuestra con
 ## Implementacion de Security Group
 > Un ***Security Group** o grupo de seguridad controla el trafico que puede llegar y salir de los recursos con los que esta asociado. Cuando se crea una ***VPC*** esta biene con un grupo de seguridad asociado.
 > Para cada grupo de seguridad, se pueden agregar reglas que controlan el trafico en funcion de los protocolos y los numeros de puertos. Hay conjuntos separados de reglas para el trafico entrante y saliente.
-> [Security Group](images/sg1.png "Security group")
+>![Security Group](images/sg1.png "Security group")
+
+##Reglas de Entrada y Salida para un grupo de seguridad
+
+##Grupos de seguridad creados
+#Para el LoadBalancer:
+>Reglas de entrada: Todo el trafico
+>Reglas de salida: Todo el trafico
+>Justificacion: Esta regla fue definida para todo el trafico de entrada ya que sera la puerta de entrada desde internet por lo tanto se debe configurara que permita **todo el trafico**
+
+#Para las instancias de API:
+>Reglas de entrada:
+>Reglas de salida: 
+>Justificacion: 
 
 ## Pasos para configurar un Security Group
 1. Ingrese al panel de navegacion y elija **security groups**
