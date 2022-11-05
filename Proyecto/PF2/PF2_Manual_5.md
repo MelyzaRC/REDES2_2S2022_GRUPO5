@@ -32,7 +32,7 @@ Integrantes:
 - Implementacion de ACLs para controlar el tráfico en las subredes 
 - Implementacion de Security Group
 
-## Implementacion de una VPC
+## Creación de una VPC
 > Amazon Virtual Private Cloud permite lanzar recursos de AWS en una red virtual privada que el usuario puede definir. Esta red virtual es muy similar a la red tradicional que se usaria en el propio centro de datos.
 >
 > **Entre se sus caracteristicas podemos encontrar:**
