@@ -24,8 +24,56 @@ Integrantes:
 # Proyecto - Fase 2
 
 ## Contenido
+- Implementacion de una VPC
 - Implementacion de ACLs para controlar el tráfico en las subredes 
 - Implementacion de Security Group
+
+## Implementacion de una VPC
+> Amazon Virtual Private Cloud permite lanzar recursos de AWS en una red virtual privada que el usuario puede definir. Esta red virtual es muy similar a la red tradicional que se usaria en el propio centro de datos.
+>
+> **Entre se sus caracteristicas podemos encontrar:**
+> **Subredes:** Una subred es es un rango de direcciones IP en su VPC. Una subred debe residir en una sola zona de disponibilidad. Después de agregar subredes, puede implementar recursos de AWS de su VPC.
+> **Direccionamiento IP:** Se puede asignar direcciones IPv4 y direcciones IPv6 a las VPC y subredes.
+> **Direccionamiento:** Se pueden utilizar **tablas de enrutamiento** para determinar dónde se dirige el tráfico de red de su subred o puerta de enlace.
+> **Puertas de enlace y puntos de conexion:** Una puerta de enlace conecta su VPC a otra red. Por ejemplo, use una puerta de enlace de Internet para conectar la VPC a Internet. Use un punto de conexión de VPC para conectarse a Servicios de AWS de forma privada, sin el uso de una puerta de enlace de Internet o un dispositivo NAT.
+>
+> ![VPC](images/vpc1png "VPC ilustration")
+
+### Pasos para crear una vpc en AWS
+1. Ingrese al **Amazon VPC** dentro de la consola de AWS
+
+![Paso1](images/vpc2.png "Amazon vpc")
+
+2. En el panel de navegacion, elija **Sus VPC**, **Crear VPC**
+
+![Paso2](images/vpc3.png "Sus vpcs")
+
+3. En **Crear VPC** se debe elejir **Solo VPC**
+
+![Paso3](images/vpc4.png "Solo vpc")
+
+4. Especificar los siguientes detalles para la creacion de la VPC
+**Name Tag:** Indique, de manera opcional, un nombre para su VPC. Esta acción creará una etiqueta con una clave de Name y el valor que especifique.
+**Bloque CIDR de IPV4:** Especifique un bloque de CIDR de IPv4 (o un rango de direcciones IP) para la VPC. Elija una de las siguientes opciones:
+**Entrada manual de CIDR IPV4:** Introduzca manualmente un CIDR de IPv4. El bloque de CIDR debe ser de un tamaño de entre /16 y /28. Se recomienda especificar un bloque de CIDR de los rangos de direcciones IP privadas
+**Bloques de CIDR de IPV4 con asignacion de IPAM:** Si hay un grupo de direcciones IPv4 de IP Address Manager (IPAM) de Amazon VPC disponible en esta región, puede obtener un CIDR de un grupo de IPAM. Si selecciona un grupo de IPAM, el tamaño del CIDR está limitado por las reglas de asignación del grupo de IPAM (mínimo permitido, máximo permitido y predeterminado).
+
+**Bloque CIDR de IPV6:** De forma opcional, puede asociar un bloque de CIDR IPv6 con su VPC. Elija una de las siguientes opciones y, a continuación, elija Select CIDR (Seleccionar CIDR):
+**No IPv6 CIDR block:** no se aprovisionará ningún CIDR IPv6 para esta VPC.
+**Bloque de CIDR de IPv6 con asignación de IPAM:**  Si hay un grupo de direcciones IPv6 de IP Address Manager (IPAM) de Amazon VPC disponible en esta región, puede obtener un CIDR de un grupo de IPAM. Si selecciona un grupo de IPAM, el tamaño del CIDR está limitado por las reglas de asignación del grupo de IPAM (mínimo permitido, máximo permitido y predeterminado).
+**Amazon-provided IPv6 CIDR block:** solicita un bloque de CIDR IPv6 de un grupo de direcciones IPv6 de Amazon. En Network Border Group (Grupo de borde de red), seleccione el grupo desde el que AWS anuncia las direcciones IP. Amazon proporciona un tamaño de bloque de CIDR de IPv6 fijo de /56. No es posible configurar el tamaño del CIDR de IPv6 que proporciona Amazon.
+**IPv6 CIDR owned by me (CIDR IPv6 de mi propiedad:** asigna un bloque de CIDR IPv6 de su grupo de direcciones IPv6. En Pool (Grupo), elija el grupo de direcciones IPv6 desde el que desea asignar el bloque de CIDR IPv6.
+
+**Tenancy:** Seleccione **Default** para garantizar que las instancias de EC2 lanzadas en esta VPC utilicen el atributo de tenencia de la instancia de EC2 especificado al lanzarlas. O seleccione **Dedicated** para garantizar que las instancias de EC2 lanzadas en esta VPC se ejecuten en instancias de tenencia dedicada, independientemente del atributo de tenencia especificado al lanzarlas.
+
+**Tags:**  Agrega etiquetas opcionales a la VPC. Una etiqueta es una marca que se asigna a un recurso de AWS. Cada etiqueta consta de una clave y un valor opcional.
+
+![Paso4](images/vpc5.png "Especificaciones VPC")
+
+5. Seleccione **Crear VPC**.
+
+![Paso3](images/vpc6.png "Crear VPC")
+
 
 ## Implementacion de ACLs para controlar el tráfico en las subredes 
 > ¿Qué es una ACL?
