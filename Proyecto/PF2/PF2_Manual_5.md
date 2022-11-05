@@ -253,6 +253,14 @@ Ahora, podemos editar las reglas, tanto de entrada como de salida, a nuestra con
 
 ![PASO11](images/12.PNG "Guardar y revisar")
 
+### ACL a crear 
+
+Determinamos que las acl a crear para reducir el tráfico innecesario en nuetras redes y subredes, debe permitir unicamente la entrada por medio del puerto 80, y la salida por medio de los puertos conocidos como efímeros (1024-65535). 
+
+![ACL](images/acl1.png "acl")
+
+![ACL](images/acl2.png "acl")
+
 ## Implementacion de Security Group
 > Un ***Security Group** o grupo de seguridad controla el trafico que puede llegar y salir de los recursos con los que esta asociado. Cuando se crea una ***VPC*** esta biene con un grupo de seguridad asociado.
 > Para cada grupo de seguridad, se pueden agregar reglas que controlan el trafico en funcion de los protocolos y los numeros de puertos. Hay conjuntos separados de reglas para el trafico entrante y saliente.
