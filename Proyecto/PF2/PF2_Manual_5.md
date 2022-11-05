@@ -172,6 +172,25 @@ Guardamos los cambios y verificamos la conectividad.
 
 ![imagen](images/tb8.png "imagen")
 
+### Subredes privadas
+
+Por su parte, las subredes privadas se tienen la caracteristica que no tienen salida a internet, pero se pueden conectar para descargar paquetes, por ejemplo. 
+
+Para ello creamos un NAT Gateway.
+
+![imagen](images/gt1.png "imagen")
+
+Pulsamos en la opcion **CREAR** y llenamos los campos correspodientes. 
+
+![imagen](images/gt2.png "imagen")
+
+![imagen](images/gt3.png "imagen")
+
+Observamos que nuestro NAT Gateway fue creado, debemos esperar unos minutos hasta que se encuentre disponible.
+
+![imagen](images/gt4.png "imagen")
+
+
 ## Implementacion de ACLs para controlar el tráfico en las subredes 
 > ¿Qué es una ACL?
 > 
