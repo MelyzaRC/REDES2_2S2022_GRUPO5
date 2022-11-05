@@ -24,7 +24,11 @@ Integrantes:
 # Proyecto - Fase 2
 
 ## Contenido
-- Implementacion de una VPC
+- Creación de una VPC
+- Tablas de enrutamiento
+- Subredes
+  - Públicas
+  - Privadas
 - Implementacion de ACLs para controlar el tráfico en las subredes 
 - Implementacion de Security Group
 
@@ -74,6 +78,99 @@ Integrantes:
 
 ![Paso3](images/vpc6.png "Crear VPC")
 
+## Tablas de enrutamiento 
+
+Una tabla de enrutamiento, también conocida como tabla de encaminamiento, es un documento electrónico que almacena las rutas a los diferentes nodos en una red informática. Los nodos pueden ser cualquier tipo de dispositivo electrónico conectado a la red. La tabla de enrutamiento generalmente se almacena en un router o en una red en forma de una base de datos o archivo. Cuando los datos deben ser enviados desde un nodo a otro de la red, se hace referencia a la tabla de enrutamiento con el fin de encontrar la mejor ruta para la transferencia de datos.
+
+![imagen](images/sub10.png "imagen")
+
+El proceso de creación y administración de las tablas de enrutamiento en AWS es el siguiente. 
+
+- Debemos ingresar al panel de VPC y dirigirnos a la opción **Tabla de enrutamiento**.
+
+![imagen](images/tb1.PNG "imagen")
+
+- Cuando elegimos la opción **Crear una tabla de enrutamiento**, se nos mostrará una pantalla en la que debemos ingresar un nombre que nos permita ingresar de manera sencilla la tabla, así como la VPC a la cual se va a aplicar.
+
+![imagen](images/tb2.PNG "imagen")
+
+- Presionamos en **Crear tabla de enrutamiento** y observamos que la tabla se ha creado con éxito. 
+
+![imagen](images/tab3.PNG "imagen")
+
+
+
+## Creación de subredes 
+
+Una subred es una red dentro de una red. Las subredes hacen que las redes sean más eficientes. Mediante la creación de subredes, el tráfico de la red puede recorrer una distancia más corta sin tener que pasar por routers innecesarios para llegar a su destino.
+
+![SUBRED](images/ejemplo.PNG "Subred")
+
+### Pasos para la creación de una subred en AWS
+
+1. Ingresar a la consola de AWS, específicamente al apartado de **VPC** y dirigirse a la opción Subredes ubicada en el panel izquierdo. 
+
+![imagen](images/sub1.PNG "imagen")
+
+2. Hacer click sobre la opción **CREAR**
+
+![imagen](images/sub2.PNG "imagen")
+
+3. Seleccionamos la VPC cuya red deseamos segmentar. Además, ingresamos el nombre de la subred, la zona de dispoinibilidad y el bloque de CIDR IPv4
+
+![imagen](images/sub3.PNG "imagen")
+
+> ¿Cómo se determina el bloque de CIDR IPv4?
+>
+> Este corresponde a la porción de la red que queremos seccionar, lo podemos calcular mediante FLSM o VLSM haciendo el análisis correspondiente para cada red. 
+> 
+> ![imagen](images/sub4.PNG "imagen")
+
+4. Hacemos click en crear y observamos que la subred fue creada con éxito y ahora aparece en la lista de subredes, en modo **Disponible**.
+
+![imagen](images/sub5.PNG "imagen")
+
+5. Repetimos los pasos anteriores en función de cuantas veces necesitamos o deseamos fragmentar nuestra red. 
+
+![imagen](images/sub6.PNG "imagen")
+
+### Subredes públicas
+
+Una red pública se caracteriza porque los recursos dentro de ella tienen acceso a internet, esto se logra mediante la utilización de un ***internet gateway***. 
+
+Para crear un ***internet gateway*** debemos dirigirnos, dentro del menú de VPC, a la opción **Puertas de enlace de internet**, en este apartado podemos observar los diferentes internet gateways creados.
+
+![imagen](images/sub7.PNG "imagen")
+
+Para crear uno nuevo, hacemos click en la opción **Crear gateway de internet**, esto nos permitirá ingresar una etiqueta que identifique al gateway a crear. 
+
+![imagen](images/sub8.PNG "imagen")
+
+Pulsamos en **CREAR** y vemos que se creó con éxito, ahora podemos administrarlo y utilizarlo para configurar nuestra tabla de enrutamiento y así poder tener salida a internet.
+
+![imagen](images/sub9.PNG "imagen")
+
+Ahora, para determinar que la red es pública, necesitamos crear una ruta con acceso a internet desde una tabla de enrutamiento y asignarla a la subred creada. 
+
+Para esto, nos dirigimos a la tabla de enrutamiento elegida y creamos la ruta utilizando el internet gateway realizado anteriormente. 
+
+![imagen](images/tb4.PNG "imagen")
+
+Posteriormente, creamos una ruta hacia cualquier lugar por medio de nuestro internet gateway. 
+
+![imagen](images/tb5.PNG "imagen")
+
+Guardamos los cambios y observamos que la ruta fue creada. 
+
+![imagen](images/tb6.PNG "imagen")
+
+Ahora, solamente debemos asignar la tabla de enrutamiento en la que creamos esta ruta con salida a internet, a la subred que deseamos configurar como **pública**.
+
+![imagen](images/tb7.PNG "imagen")
+
+Guardamos los cambios y verificamos la conectividad. 
+
+![imagen](images/tb8.PNG "imagen")
 
 ## Implementacion de ACLs para controlar el tráfico en las subredes 
 > ¿Qué es una ACL?
