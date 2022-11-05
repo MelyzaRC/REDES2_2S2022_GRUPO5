@@ -37,7 +37,7 @@ Integrantes:
 > **Direccionamiento:** Se pueden utilizar **tablas de enrutamiento** para determinar dónde se dirige el tráfico de red de su subred o puerta de enlace.
 > **Puertas de enlace y puntos de conexion:** Una puerta de enlace conecta su VPC a otra red. Por ejemplo, use una puerta de enlace de Internet para conectar la VPC a Internet. Use un punto de conexión de VPC para conectarse a Servicios de AWS de forma privada, sin el uso de una puerta de enlace de Internet o un dispositivo NAT.
 >
-> ![VPC](images/vpc1png "VPC ilustration")
+> ![VPC](images/vpc1.png "VPC ilustration")
 
 ### Pasos para crear una vpc en AWS
 1. Ingrese al **Amazon VPC** dentro de la consola de AWS
